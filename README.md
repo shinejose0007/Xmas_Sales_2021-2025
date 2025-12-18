@@ -365,10 +365,7 @@ Outputs
 <p align="center"><img src="6.JPG" width="1000"></p>
 <p align="center"><img src="7.JPG" width="1000"></p>
 
-##  Next steps & improvements
-- Add Key Vault integration, managed identities, incremental loads, CI/CD for ADF, and scheduled refresh in Power BI Service.
 
----
 
 **Author:** Shine Jose
 **License:** MIT (see LICENSE file)
@@ -377,15 +374,7 @@ This repository is provided as sample educational content by Shine Jose..... Use
 
 ---
 
-### Quick checklist (copy into PR description)
 
-* [ ] Data loaded and types checked
-* [ ] Dim tables created and de-duped
-* [ ] Relationships configured (star schema)
-* [ ] All core DAX measures created and validated
-* [ ] Dashboard pages built & formatted
-* [ ] Slicers and bookmarks added
-* [ ] Published to Power BI Service and scheduled refresh configured
 
 ---
 
