@@ -147,17 +147,20 @@ Create these queries (each one based on the main table using `Reference` not `Du
 
 ```powerquery
 let
-    StartDate = #date(2021, 1, 1),
-    EndDate = #date(2025, 12, 31),
-    Dates = List.Dates(StartDate, Duration.Days(EndDate - StartDate) + 1, #duration(1,0,0,0)),
-    TableFromList = Table.FromList(Dates, Splitter.SplitByNothing(), {"Date"}),
-    AddYear = Table.AddColumn(TableFromList, "Year", each Date.Year([Date])),
-    AddMonth = Table.AddColumn(AddYear, "Month", each Date.Month([Date])),
-    AddMonthName = Table.AddColumn(AddMonth, "Month Name", each Date.MonthName([Date])),
-    AddQuarter = Table.AddColumn(AddMonthName, "Quarter", each "Q" & Number.ToText(Date.QuarterOfYear([Date]))),
-    AddIsHolidaySeason = Table.AddColumn(AddQuarter, "IsHolidaySeason", each if Date.Month([Date]) in {11,12} then true else false)
+  StartDate = #date(2021,1,1),
+  EndDate = #date(2025,12,31),
+  Dates = List.Dates(StartDate, Duration.Days(EndDate - StartDate) + 1, #duration(1,0,0,0)),
+  DateKey = Date.ToText([Date],"yyyyMMdd"),
+  TableFromList = Table.FromList(Dates, Splitter.SplitByNothing(), {"Date"}),
+  AddYear = Table.AddColumn(TableFromList, "Year", each Date.Year([Date])),
+  AddMonth = Table.AddColumn(AddYear, "Month", each Date.Month([Date])),
+  AddMonthName = Table.AddColumn(AddMonth, "MonthName", each Date.ToText([Date],"MMMM")),
+  AddDay = Table.AddColumn(AddMonthName, "Day", each Date.Day([Date])),
+  AddQuarter = Table.AddColumn(AddDay, "Quarter", each "Q" & Number.ToText(Date.QuarterOfYear([Date]))),
+  AddDateKey = Table.AddColumn(AddQuarter, "DateKey", each Date.ToText([Date],"yyyyMMdd")),
+  Reordered = Table.ReorderColumns(AddDateKey, {"Date","DateKey","Year","Quarter","Month","MonthName","Day"})
 in
-    AddIsHolidaySeason
+  Reordered
 ```
 
 * Close & Apply (we will finalize relationships later).
@@ -350,7 +353,27 @@ Create the following pages and visuals. For each visual set the fields exactly a
 
 # 17. License & contact
 
-This repository is provided as sample educational content. Use and modify freely.
+## Screenshots
+
+Outputs
+
+<p align="center"><img src="1.JPG" width="1000"></p>
+<p align="center"><img src="2.JPG" width="1000"></p>
+<p align="center"><img src="3.JPG" width="1000"></p>
+<p align="center"><img src="4.JPG" width="1000"></p>
+<p align="center"><img src="5.JPG" width="1000"></p>
+<p align="center"><img src="6.JPG" width="1000"></p>
+<p align="center"><img src="7.JPG" width="1000"></p>
+
+##  Next steps & improvements
+- Add Key Vault integration, managed identities, incremental loads, CI/CD for ADF, and scheduled refresh in Power BI Service.
+
+---
+
+**Author:** Shine Jose
+**License:** MIT (see LICENSE file)
+
+This repository is provided as sample educational content by Shine Jose..... Use and modify freely.........
 
 ---
 
@@ -366,8 +389,3 @@ This repository is provided as sample educational content. Use and modify freely
 
 ---
 
-If you'd like, I can also:
-
-* Generate example DAX for RFM analysis.
-* Produce a finished `.pbix` saved in `/powerbi/Xmas_Sales_Report.pbix` ready to download.
-* Add screenshots for each visual in `/docs/`.
